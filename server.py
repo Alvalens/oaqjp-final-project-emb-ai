@@ -10,6 +10,9 @@ def emotion_detector_route():
     text_to_analyze = request.args.get("textToAnalyze")
     result = emotion_detector(text_to_analyze)
 
+    if result["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
+
     emotions_str = "anger: {}, disgust: {}, fear: {}, joy: {}, sadness: {}".format(
         result["anger"],
         result["disgust"],
@@ -26,6 +29,7 @@ def emotion_detector_route():
 @app.route("/")
 def render_index_page():
     return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
